@@ -1,0 +1,13 @@
+{
+  "name": "Hello World",
+  "inputs": {
+    "base_url": {
+      "type": "string",
+      "description": "base url to access the Hello World API"
+    },
+    "number": {
+      "type": "integer",
+      "description": "Number of times to print 'Hello World'"
+    }
+  }
+}

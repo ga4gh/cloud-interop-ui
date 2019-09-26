@@ -1,0 +1,2 @@
+/resources/schedules/hello_world_a.json
+/resources/schedules/hello_world_b.json

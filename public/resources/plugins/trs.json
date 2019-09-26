@@ -1,0 +1,17 @@
+{
+  "name": "TRS",
+  "description": "Test a Tool Registry Service API",
+  "inputs": [
+    {
+      "key": "base_url",
+      "type": "string",
+      "description": "base url to access the TRS API"
+    },
+
+    {
+      "key": "tool_id",
+      "type": "string",
+      "description": "TRS tool id to request"
+    }
+  ]
+}

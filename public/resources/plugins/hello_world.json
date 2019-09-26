@@ -1,0 +1,17 @@
+{
+  "name": "Hello World",
+  "description": "A simple 'Hello World' test",
+  "inputs": [
+    {
+      "key": "base_url",
+      "type": "string",
+      "description": "base url to access the Hello World API"
+    },
+
+    {
+      "key": "number",
+      "type": "integer",
+      "description": "Number of times to print 'Hello World'"
+    }
+  ]
+}

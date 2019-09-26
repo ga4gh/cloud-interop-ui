@@ -1,0 +1,17 @@
+{
+  "name": "Refget",
+  "description": "test a Refget service",
+  "inputs": [
+    {
+      "key": "base_url",
+      "type": "string",
+      "description": "base url to access the refget API"
+    },
+
+    {
+      "key": "sequence_id",
+      "type": "string",
+      "description": "sequence id to request sequence and metadata from"
+    }
+  ]
+}

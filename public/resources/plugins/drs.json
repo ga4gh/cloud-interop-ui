@@ -1,0 +1,17 @@
+{
+  "name": "DRS",
+  "description": "Test a Data Repository Service API",
+  "inputs": [
+    {
+      "key": "base_url",
+      "type": "string",
+      "description": "base url to access the DRS API"
+    },
+
+    {
+      "key": "object_id",
+      "type": "string",
+      "description": "DRS object id to request"
+    }
+  ]
+}

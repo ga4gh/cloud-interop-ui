@@ -1,0 +1,17 @@
+{
+  "name": "WES",
+  "description": "Test a Workflow Execution Service API",
+  "inputs": [
+    {
+      "key": "base_url",
+      "type": "string",
+      "description": "base url to access the WES API"
+    },
+
+    {
+      "key": "job_id",
+      "type": "string",
+      "description": "WES job id to inspect"
+    }
+  ]
+}

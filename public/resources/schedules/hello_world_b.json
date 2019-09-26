@@ -1,0 +1,14 @@
+{
+  "name": "HelloWorldB",
+  "plugin": "Hello World",
+  "plugin_url": "/resources/plugins/hello_world.json",
+  "parameters": {
+    "base_url": "http://localhost:4000",
+    "number": 7
+  },
+  "schedule": {
+    "frequency": "weekly",
+    "dayOfWeek": "tuesday",
+    "timeOfDay": "10:30:00"
+  }
+}

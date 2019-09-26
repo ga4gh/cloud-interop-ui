@@ -1,0 +1,5 @@
+/resources/plugins/hello_world.json
+/resources/plugins/refget.json
+/resources/plugins/drs.json
+/resources/plugins/trs.json
+/resources/plugins/wes.json
