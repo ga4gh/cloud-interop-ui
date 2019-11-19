@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import Spacer from '../Spacer';
+import Spacer from '../common/Spacer';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';

@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import Navbar from './components/Navbar';
-import PageSetter from './components/pages/PageSetter';
+import {Route, Link, BrowserRouter as Router} from 'react-router-dom';
+import Navbar from './components/common/Navbar';
 import Axios from 'axios';
+
+import Plugins from './components/pages/Plugins';
+import Configurations from './components/pages/Configurations';
+import Foo from './components/common/Foo';
+import Bar from './components/common/Bar';
 
 class App extends Component {
 
     state = {
         sidebarVisible: false,
-        page: "home",
         plugins: [],
         schedules: [],
         pluginsMap: {}
@@ -20,10 +24,6 @@ class App extends Component {
 
     toggleSidebar = () => {
         this.setState({sidebarVisible: !this.state.sidebarVisible})
-    }
-
-    changePage = (newPage) => {
-        this.setState({page: newPage})
     }
 
     async getPlugins() {
@@ -95,32 +95,20 @@ class App extends Component {
     }
 
     setCompleteState = async () => {
-        //console.log("setting complete state");
-        //console.log("setting plugins and schedules");
-        //console.log(this.state.plugins);
         await Promise.all([this.setPlugins(), this.setSchedules()]);
-        //console.log("after setPlugins and setSchedules");
-        //console.log(this.state.plugins);
-        //console.log(this.state.plugins[0].name);
-        //console.log(this.state.schedules[0].name);
-        //console.log("***");
-        //console.log(this.state.pluginsMap);
         await Promise.all([this.setPluginsMap()]);
-
-
-        
-        
-        
-
     }
 
+    /*
+    <PageSetter 
+        pageKey={this.state.page}
+        plugins={this.state.plugins}
+        schedules={this.state.schedules}
+        pluginsMap={this.state.pluginsMap}
+    />
+    */
+
     render() {
-        /*
-        return (
-            <p>test</p>
-        )
-        */
-        
         return (
             <div className="App">
                 <Navbar 
@@ -128,15 +116,14 @@ class App extends Component {
                   sidebarFunction={this.toggleSidebar}
                   sidebarVisible={this.state.sidebarVisible}
                 />
-                <PageSetter 
-                  pageKey={this.state.page}
-                  plugins={this.state.plugins}
-                  schedules={this.state.schedules}
-                  pluginsMap={this.state.pluginsMap}
-                />
+                <Router>
+                    <Route path="/plugins" component={Plugins} />
+                    <Route path="/configurations" component={Configurations} />
+                    <Route path="/foo" component={Foo} />
+                    <Route path="/bar" component={Bar} />
+                </Router>
             </div>
         )
-        
     }
 }
 

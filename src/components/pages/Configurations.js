@@ -2,23 +2,25 @@ import React, {Component} from 'react';
 import Axios from 'axios';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import Spacer from '../Spacer';
+import Spacer from '../common/Spacer';
 import ScheduleForm from '../forms/ScheduleForm';
 import {
     Button, Paper, Table, TableBody, TableCell, TableHead, TableRow
 } from '@material-ui/core'
 
-class Schedules extends Component {
+class Configurations extends Component {
 
     state = {
-        activeForm: []
+        // activeForm: []
     }
 
+    /*
     constructor(props) {
         super(props);
         this.state.activeForm = this.initializeActiveForm();
         console.log("done the constructor");
     }
+    */
 
     initializeActiveForm = () => {
         return this.props.schedules.map(schedule => false)   
@@ -123,10 +125,10 @@ class Schedules extends Component {
                 </Typography>
                 <Spacer />
                 <p>Schedules:</p>
-                {this.installedSchedules()}
+                {/*this.installedSchedules()*/}
             </Container>
         )
     }
 }
 
-export default Schedules;
+export default Configurations;

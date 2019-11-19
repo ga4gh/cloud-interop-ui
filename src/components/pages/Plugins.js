@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Spacer from '../Spacer';
+import {
+    Box,
+    Container,
+    Typography,
+    Table,
+    TableCell,
+    TableHead,
+    TableRow,
+    Paper,
+    Button
+} from '@material-ui/core';
+import Spacer from '../common/Spacer';
 import ScheduleForm from '../forms/ScheduleForm';
 
 class Plugins extends Component {
@@ -18,7 +20,7 @@ class Plugins extends Component {
     }
 
     state = {
-        activeModal: this.initializeActiveModal()
+        // activeModal: this.initializeActiveModal()
     }
 
     openModal = (index) => {
@@ -83,18 +85,20 @@ class Plugins extends Component {
 
     render() {
         return (
-            <Container>
-                <Typography variant="h1">
-                    Plugins
-                </Typography>
-                <Spacer />
-                <Button variant="contained" color="primary">
-                    Add New Plugin
-                </Button>
-                <Spacer />
-                <p>Installed Plugins:</p>
-                {this.installedPlugins()}
-            </Container>
+            <Box>
+                <Container>
+                    <Typography variant="h1">
+                        Plugins
+                    </Typography>
+                    <Spacer />
+                    <Button variant="contained" color="primary">
+                        Add New Plugin
+                    </Button>
+                    <Spacer />
+                    <p>Installed Plugins:</p>
+                    {/*this.installedPlugins()*/}
+                </Container>
+            </Box>
         )
     }
 }
