@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import {inputSchema} from './input';
+import {codebaseSchema} from './codebase';
 
 var pluginSchema = new mongoose.Schema({
     name: {
@@ -10,11 +12,11 @@ var pluginSchema = new mongoose.Schema({
         required: true
     },
     inputs: {
-        type: String,
+        type: [inputSchema],
         required: true
     },
     codebase: {
-        type:String,
+        type: codebaseSchema,
         required: true
     }
 })

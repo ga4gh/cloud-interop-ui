@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {Route, Link, BrowserRouter as Router} from 'react-router-dom';
-import Navbar from './components/common/Navbar';
+
 import Axios from 'axios';
 
+import FlashMessageGroup from './components/common/FlashMessageGroup';
+import Navbar from './components/common/Navbar';
 import Plugins from './components/pages/Plugins';
+import PluginForm from './components/forms/PluginForm';
 import Configurations from './components/pages/Configurations';
-import Foo from './components/common/Foo';
-import Bar from './components/common/Bar';
 
 class App extends Component {
 
@@ -99,15 +100,6 @@ class App extends Component {
         await Promise.all([this.setPluginsMap()]);
     }
 
-    /*
-    <PageSetter 
-        pageKey={this.state.page}
-        plugins={this.state.plugins}
-        schedules={this.state.schedules}
-        pluginsMap={this.state.pluginsMap}
-    />
-    */
-
     render() {
         return (
             <div className="App">
@@ -116,11 +108,14 @@ class App extends Component {
                   sidebarFunction={this.toggleSidebar}
                   sidebarVisible={this.state.sidebarVisible}
                 />
+                <FlashMessageGroup
+                    flashSuccess={JSON.parse(window.flashSuccess)}
+                    flashError={JSON.parse(window.flashError)}
+                 />
                 <Router>
-                    <Route path="/plugins" component={Plugins} />
-                    <Route path="/configurations" component={Configurations} />
-                    <Route path="/foo" component={Foo} />
-                    <Route path="/bar" component={Bar} />
+                    <Route exact path="/plugins" component={Plugins} />
+                    <Route exact path="/plugins/new" component={PluginForm} />
+                    <Route exact path="/configurations" component={Configurations} />
                 </Router>
             </div>
         )

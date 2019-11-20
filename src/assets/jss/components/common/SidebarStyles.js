@@ -4,4 +4,4 @@ const SidebarStyles = {
     }
 }
 
-export default SidebarStyles
+export default SidebarStyles;

@@ -91,7 +91,7 @@ class Plugins extends Component {
                         Plugins
                     </Typography>
                     <Spacer />
-                    <Button variant="contained" color="primary">
+                    <Button component="a" href="/plugins/new" variant="contained" color="primary">
                         Add New Plugin
                     </Button>
                     <Spacer />
