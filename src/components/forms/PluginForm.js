@@ -9,11 +9,12 @@ import {
     FormHelperText,
     Input,
     InputLabel,
-    Typography,
     Table,
     TextField
 } from '@material-ui/core';
+import SectionTitle from '../common/SectionTitle';
 import Spacer from '../common/Spacer';
+import Title from '../common/Title';
 
 class PluginForm extends Component {
 
@@ -50,14 +51,10 @@ class PluginForm extends Component {
         return (
             <Box>
                 <Container>
-                    <Typography variant="h1">
-                        Create New Plugin
-                    </Typography>
+                    <Title title="Create New Plugin" />
                     <Spacer />
                     <form action="/plugins" method="post">
-                        <Typography variant="h3">
-                            Name
-                        </Typography>
+                        <SectionTitle sectionTitle="Name" />
                         <FormControl>
                             <InputLabel 
                                 htmlFor="name"
@@ -78,9 +75,8 @@ class PluginForm extends Component {
                             </FormHelperText>
                         </FormControl>
                         <Spacer />
-                        <Typography variant="h3">
-                            Description
-                        </Typography>
+
+                        <SectionTitle sectionTitle="Description" />
                         <FormControl>
                             <TextField
                                 placeholder="Description" 
@@ -96,9 +92,8 @@ class PluginForm extends Component {
                             <FormHelperText id="description-helper">Longer description, outline test cases and report output</FormHelperText>
                         </FormControl>
                         <Spacer />
-                        <Typography variant="h3">
-                            Inputs
-                        </Typography>
+
+                        <SectionTitle sectionTitle="Inputs" />
                         <Button 
                             variant="contained"
                             color="primary"
@@ -190,9 +185,7 @@ class PluginForm extends Component {
                             })}
                         </div>
                         <Spacer />
-                        <Typography variant="h3">
-                            Codebase
-                        </Typography>
+                        <SectionTitle sectionTitle="Codebase" />
                         <FormControl>
                             <InputLabel 
                                 htmlFor="codebase-package"
@@ -253,11 +246,7 @@ class PluginForm extends Component {
                             </FormHelperText>
                         </FormControl>
                         <Spacer />
-                        <Input
-                            type="submit"
-                        >
-                            Submit Form
-                        </Input>
+                        <Input type="submit">Submit Form</Input>
                     </form>
                 </Container>
             </Box>

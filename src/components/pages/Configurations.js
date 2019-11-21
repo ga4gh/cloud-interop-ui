@@ -1,12 +1,21 @@
 import React, {Component} from 'react';
 import Axios from 'axios';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Spacer from '../common/Spacer';
-import ScheduleForm from '../forms/ScheduleForm';
 import {
-    Button, Paper, Table, TableBody, TableCell, TableHead, TableRow
-} from '@material-ui/core'
+    Box,
+    Container,
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow
+} from '@material-ui/core';
+
+import ConfigurationForm from '../forms/ConfigurationForm';
+import SectionTitle from '../common/SectionTitle';
+import Spacer from '../common/Spacer';
+import Title from '../common/Title';
 
 class Configurations extends Component {
 
@@ -119,14 +128,18 @@ class Configurations extends Component {
 
     render() {
         return (
-            <Container>
-                <Typography variant="h1">
-                    Schedules
-                </Typography>
-                <Spacer />
-                <p>Schedules:</p>
-                {/*this.installedSchedules()*/}
-            </Container>
+            <Box>
+                <Container>
+                    <Title title="Configurations" />
+                    <Spacer />
+                    <Button component="a" href="/configurations/new" variant="contained" color="primary">
+                        Add New Configuration
+                    </Button>
+                    <Spacer />
+                    <SectionTitle sectionTitle="Current Configurations" />
+                    {/*this.installedSchedules()*/}
+                </Container>
+            </Box>
         )
     }
 }

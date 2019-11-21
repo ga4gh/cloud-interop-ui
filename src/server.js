@@ -5,6 +5,7 @@ import flash from "connect-flash";
 import process from "process";
 import bodyParser from "body-parser";
 import mongoose from 'mongoose';
+import methodOverride from 'method-override';
 
 import {renderReact} from './functions/routes';
 import pluginsRouter from './routes/plugins/router';
@@ -21,11 +22,13 @@ server.use(express.static("public"));
 server.use(cookieParser('secretHere'));
 server.use(session());
 server.use(flash());
+server.use(methodOverride('_method'));
 
 mongoose.connect(
     "mongodb://localhost:27017/ga4gh_testbed",
     {useNewUrlParser: true}
 );
+mongoose.set('useFindAndModify', false);
 
 
 server.get("/", renderReact);

@@ -1,55 +1,54 @@
+import Axios from 'axios';
 import React, {Component} from 'react';
 import {
     Box,
     Container,
-    Typography,
     Table,
+    TableBody,
     TableCell,
     TableHead,
     TableRow,
     Paper,
     Button
 } from '@material-ui/core';
+import SectionTitle from '../common/SectionTitle';
 import Spacer from '../common/Spacer';
-import ScheduleForm from '../forms/ScheduleForm';
+import Title from '../common/Title';
 
 class Plugins extends Component {
 
-    initializeActiveModal = () => {
-        return this.props.plugins.map(plugin => false);
-    }
-
     state = {
-        // activeModal: this.initializeActiveModal()
+        plugins: []
     }
 
-    openModal = (index) => {
-        let newState = {activeModal: this.initializeActiveModal()};
-        newState.activeModal[index] = true;
-        this.setState(newState);
+    constructor() {
+        super();
+        this.setPlugins();
     }
 
-    closeModal = (index) => {
-        this.setState({activeModal: this.initializeActiveModal()});
+    setPlugins = () => {
+        Axios
+            .get("/plugins/get")
+            .then(response => {
+                this.setState({plugins: response.data});
+            })
     }
 
-    newScheduleButton = (pluginJson, index) => {
+    deletePluginHandler = (pluginId) => {
+        Axios
+            .delete(`/plugins/${pluginId}`)
+            .then(response => this.setPlugins());
+    }
+
+    newConfigurationButton = (pluginJson, index) => {
         return (
             <span>
-                <Button 
-                    onClick={() => {this.openModal(index)}}
+                <Button           
                     variant="contained" 
                     color="primary"
                 >
-                    New Schedule
+                    New Configuration
                 </Button>
-                <ScheduleForm
-                    open={this.state.activeModal[index]}
-                    handleClose={() => {this.closeModal(index)}}
-                    plugin={pluginJson}
-                    currentValues={{}}
-                >
-                </ScheduleForm>
             </span>
         )
     }
@@ -62,18 +61,41 @@ class Plugins extends Component {
                   <TableRow>
                     <TableCell>Title</TableCell>
                     <TableCell align="left">Description</TableCell>
-                    <TableCell align="right">Create New Test Schedule from Plugin</TableCell>
+                    <TableCell align="right">Create New Test Configuration from Plugin</TableCell>
+                    <TableCell align="right">Edit</TableCell>
+                    <TableCell align="right">Delete</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                    {this.props.plugins.map((plugin, index) => (
+                    {this.state.plugins.map((plugin, index) => (
                         <TableRow key={plugin.name}>
                             <TableCell component="th" scope="row">
-                            {plugin.name}
+                                {plugin.name}
                             </TableCell>
+
                             <TableCell align="left">{plugin.description}</TableCell>
+
                             <TableCell align="right">
-                                {this.newScheduleButton(plugin, index)}
+                                {this.newConfigurationButton(plugin, index)}
+                            </TableCell>
+
+                            <TableCell align="right">
+                                <Button           
+                                    variant="contained" 
+                                    color="default"
+                                >
+                                    Edit
+                                </Button>
+                            </TableCell>
+
+                            <TableCell align="right">
+                                <Button
+                                    variant="contained" 
+                                    color="secondary"
+                                    onClick={this.deletePluginHandler.bind(this, plugin._id)}
+                                >
+                                    Delete
+                                </Button>
                             </TableCell>
                         </TableRow>
                     ))}   
@@ -87,16 +109,19 @@ class Plugins extends Component {
         return (
             <Box>
                 <Container>
-                    <Typography variant="h1">
-                        Plugins
-                    </Typography>
+                    <Title title="Plugins" />
                     <Spacer />
-                    <Button component="a" href="/plugins/new" variant="contained" color="primary">
+                    <Button
+                        component="a"
+                        href="/plugins/new"
+                        variant="contained"
+                        color="primary"
+                    >
                         Add New Plugin
                     </Button>
                     <Spacer />
-                    <p>Installed Plugins:</p>
-                    {/*this.installedPlugins()*/}
+                    <SectionTitle sectionTitle="Installed Plugins" />
+                    {this.installedPlugins()}
                 </Container>
             </Box>
         )

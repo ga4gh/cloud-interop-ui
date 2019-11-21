@@ -35,23 +35,9 @@ const Sidebar = (props) => {
             label: "Configurations",
             icon: <CodeIcon />,
             href: "/configurations"
-        },
-
-        "foo": {
-            key: "foo",
-            label: "Foo", 
-            icon: <MailIcon />,
-            href: "/foo"
-        },
-
-        "bar": {
-            key: "bar",
-            label: "Bar",
-            icon: <CodeIcon />,
-            href: "/bar"
         }
     }
-    const itemKeys = ["home", "plugins", "configurations", "foo", "bar"];
+    const itemKeys = ["home", "plugins", "configurations"];
 
     return (
         <div>      

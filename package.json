@@ -25,6 +25,7 @@
     "express-session": "^1.17.0",
     "fs": "0.0.1-security",
     "list-react-files": "^0.2.0",
+    "method-override": "^3.0.0",
     "mongoose": "^5.7.11",
     "path": "^0.12.7",
     "react": "^16.9.0",

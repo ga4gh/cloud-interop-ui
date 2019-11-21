@@ -19,7 +19,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
 const Navbar = (props) => {
   const classes = useStyles();
   return (
@@ -36,12 +35,11 @@ const Navbar = (props) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            GA4GH Testbed
+            GA4GH Test Orchestrator
           </Typography>
         </Toolbar>
       </AppBar>
       <Sidebar 
-        changePageFunction={props.changePageFunction}
         sidebarFunction={props.sidebarFunction}
         visible={props.sidebarVisible}
       />
