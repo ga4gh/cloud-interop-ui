@@ -10,7 +10,8 @@ import {
     Code as CodeIcon,
     Mail as MailIcon,
     Inbox as InboxIcon,
-    Home as HomeIcon
+    Home as HomeIcon,
+    Assignment as AssignmentIcon
 } from '@material-ui/icons';
 
 const Sidebar = (props) => {
@@ -35,9 +36,16 @@ const Sidebar = (props) => {
             label: "Configurations",
             icon: <CodeIcon />,
             href: "/configurations"
+        },
+
+        "reports": {
+            key: "reports",
+            label: "Reports",
+            icon: <AssignmentIcon />,
+            href: "/reports"
         }
     }
-    const itemKeys = ["home", "plugins", "configurations"];
+    const itemKeys = ["home", "plugins", "configurations", "reports"];
 
     return (
         <div>      

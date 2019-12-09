@@ -15,10 +15,14 @@ import {
 import SectionTitle from '../common/SectionTitle';
 import Spacer from '../common/Spacer';
 import Title from '../common/Title';
+import Axios from 'axios';
 
 class PluginForm extends Component {
 
     state = {
+        editPluginId: null,
+        formAction: "/plugins",
+        formMethod: "POST",
         name: "",
         description: "",
         inputs: [],
@@ -27,6 +31,30 @@ class PluginForm extends Component {
             module: "",
             method: ""
         }
+    }
+
+    constructor(props) {
+        super(props);
+        let regexResult = this.props.location.pathname.match(/\/plugins\/(.+?)\/edit/);
+        if (regexResult) {
+            let pluginId = regexResult[1];
+            this.setPluginFormToEdit(pluginId);
+        };
+    }
+
+    setPluginFormToEdit = async (pluginId) => {
+        this.setState({editPluginId: pluginId});
+        let response = await Axios.get(`/plugins/get?id=${pluginId}`);    
+        let plugin = response.data[0];
+        let newState = {
+            editPluginId: pluginId,
+            formAction: `/plugins/${pluginId}?_method=PUT`,
+            name: plugin.name,
+            description: plugin.description,
+            inputs: plugin.inputs,
+            codebase: plugin.codebase
+        }
+        this.setState(newState);
     }
 
     removeInputHandler = i => {
@@ -53,7 +81,10 @@ class PluginForm extends Component {
                 <Container>
                     <Title title="Create New Plugin" />
                     <Spacer />
-                    <form action="/plugins" method="post">
+                    <form
+                        action={this.state.formAction}
+                        method={this.state.formMethod}
+                    >
                         <SectionTitle sectionTitle="Name" />
                         <FormControl>
                             <InputLabel 
@@ -247,6 +278,7 @@ class PluginForm extends Component {
                         </FormControl>
                         <Spacer />
                         <Input type="submit">Submit Form</Input>
+                        <Spacer />
                     </form>
                 </Container>
             </Box>

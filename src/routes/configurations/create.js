@@ -1,11 +1,16 @@
 import Configuration from '../../models/configuration';
 
 const create = (req, res) => {
-    console.log(req.body.configuration);
-    // Configuration.create(req.body.configuration, (error, created) => {
-        
-    // })
-    res.redirect("/configurations");
+    var newConfiguration = req.body.configuration;
+    Configuration.create(newConfiguration, (error, created) => {
+        if (error) {
+            req.flash('error', 'Error: Could not create configuration');
+            res.redirect("/configurations");
+        } else {
+            req.flash('success', 'New Configuration created');
+            res.redirect("/configurations");
+        }  
+    })
 }
 
 export default create;

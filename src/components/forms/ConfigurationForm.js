@@ -10,6 +10,7 @@ import {
     InputLabel,
     Select
 } from '@material-ui/core';
+import queryString from 'query-string';
 
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -39,22 +40,26 @@ class ConfigurationForm extends Component {
         }
     }
 
-    constructor() {
-        super();
-        this.setPlugins();
+    constructor(props) {
+        super(props);
+        this.setPlugins().then(response => {
+            let params = queryString.parse(this.props.location.search);
+            if (params.pluginId) {
+                this.state.pluginId = params.pluginId;
+                this.setState({pluginId: params.pluginId})
+                this.setState({activePlugin: this.state.plugins[this.state.pluginsDict[params.pluginId]]});
+            }
+        })
     }
 
-    setPlugins = () => {
-        Axios
-            .get("/plugins/get")
-            .then(response => {
-                this.setState({plugins: response.data})
-                let pluginsDict = {};
-                response.data.forEach((plugin, i) => {
-                    pluginsDict[plugin._id] = i;
-                })
-                this.setState({pluginsDict: pluginsDict});
-            })
+    setPlugins = async () => {
+        let response = await Axios.get("/plugins/get");
+        this.setState({plugins: response.data})
+        let pluginsDict = {};
+        response.data.forEach((plugin, i) => {
+            pluginsDict[plugin._id] = i;
+        })
+        this.setState({pluginsDict: pluginsDict});
     }
 
     render() {
@@ -111,6 +116,7 @@ class ConfigurationForm extends Component {
                                             id="name"
                                             name="configuration[name]"
                                             value={this.state.name}
+                                            onChange={e => this.setState({name: e.target.value})}
                                         />
                                         <FormHelperText>
                                             short, descriptive name of new
@@ -176,6 +182,7 @@ class ConfigurationForm extends Component {
                                 </FormGroup>
                                 <Spacer />
                                 <Input type="submit">Submit Form</Input>
+                                <Spacer />
                             </div>
                         : null}
                     </form>

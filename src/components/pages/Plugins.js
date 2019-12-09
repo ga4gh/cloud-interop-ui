@@ -40,12 +40,14 @@ class Plugins extends Component {
             .then(response => this.setPlugins());
     }
 
-    newConfigurationButton = (pluginJson, index) => {
+    newConfigurationButton = (plugin, index) => {
         return (
             <span>
                 <Button           
                     variant="contained" 
                     color="primary"
+                    component="a"
+                    href={`/configurations/new?pluginId=${plugin._id}`}
                 >
                     New Configuration
                 </Button>
@@ -81,8 +83,10 @@ class Plugins extends Component {
 
                             <TableCell align="right">
                                 <Button           
-                                    variant="contained" 
+                                    variant="contained"
                                     color="default"
+                                    component="a"
+                                    href={`/plugins/${plugin._id}/edit`}
                                 >
                                     Edit
                                 </Button>

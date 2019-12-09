@@ -10,6 +10,7 @@ import methodOverride from 'method-override';
 import {renderReact} from './functions/routes';
 import pluginsRouter from './routes/plugins/router';
 import configurationsRouter from './routes/configurations/router';
+import reportsRouter from './routes/reports/router';
 
 const ejs = require("ejs").__express;
 const server = express();
@@ -30,10 +31,10 @@ mongoose.connect(
 );
 mongoose.set('useFindAndModify', false);
 
-
 server.get("/", renderReact);
 server.use("/plugins", pluginsRouter);
 server.use("/configurations", configurationsRouter);
+server.use("/reports", reportsRouter);
 
 server.listen(port, () => {
     console.log(`GA4GH Interoperability Testbed running on port ${port}`);
