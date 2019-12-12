@@ -29,6 +29,9 @@ import Axios from 'axios';
 class ConfigurationForm extends Component {
 
     state = {
+        editConfigurationId: null,
+        formAction: "/configurations",
+        formMethod: "POST",
         plugins: [],
         pluginsDict: {},
         activePlugin: undefined,
@@ -49,6 +52,12 @@ class ConfigurationForm extends Component {
                 this.setState({pluginId: params.pluginId})
                 this.setState({activePlugin: this.state.plugins[this.state.pluginsDict[params.pluginId]]});
             }
+
+            let regexResult = this.props.location.pathname.match(/\/configurations\/(.+?)\/edit/);
+            if (regexResult) {
+                let configurationId = regexResult[1];
+                this.setConfigurationFormToEdit(configurationId);
+            }
         })
     }
 
@@ -62,13 +71,32 @@ class ConfigurationForm extends Component {
         this.setState({pluginsDict: pluginsDict});
     }
 
+    setConfigurationFormToEdit = async (configurationId) => {
+        this.setState({editConfigurationId: configurationId});
+        let response = await Axios.get(`/configurations/get?id=${configurationId}`)
+        let configuration = response.data[0]
+        let newState = {
+            editConfigurationId: configurationId,
+            formAction: `/configurations/${configurationId}?_method=PUT`,
+            name: configuration.name,
+            pluginId: configuration.pluginId,
+            parameters: configuration.parameters,
+            schedule: configuration.schedule,
+            activePlugin: this.state.plugins[this.state.pluginsDict[configuration.pluginId]]
+        }
+        this.setState(newState);
+    }
+
     render() {
         return (
             <Box>
                 <Container>
                     <Title title="Create New Configuration" />
                     <Spacer />
-                    <form action="/configurations" method="post">
+                    <form 
+                        action={this.state.formAction}
+                        method={this.state.formMethod}
+                    >
                         <SectionTitle sectionTitle="Plugin" />
                         <InputLabel
                             htmlFor="select-plugin"
@@ -139,6 +167,12 @@ class ConfigurationForm extends Component {
                                                     name={`configuration[parameters][${input.key}]`}
                                                     type={input.type}
                                                     id={`parameters-${input.key}`}
+                                                    value={this.state.parameters[input.key]}
+                                                    onChange={e => {
+                                                        let parameters = {...this.state.parameters};
+                                                        parameters[input.key] = e.target.value;
+                                                        this.setState({parameters: parameters});
+                                                    }}
                                                 />
                                                 <FormHelperText
                                                     id={`parameters-${input.key}-helper`}

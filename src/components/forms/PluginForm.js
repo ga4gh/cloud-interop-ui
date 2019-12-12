@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {
     Box,
     Button,
@@ -9,6 +10,8 @@ import {
     FormHelperText,
     Input,
     InputLabel,
+    MenuItem,
+    Select,
     Table,
     TextField
 } from '@material-ui/core';
@@ -16,20 +19,95 @@ import SectionTitle from '../common/SectionTitle';
 import Spacer from '../common/Spacer';
 import Title from '../common/Title';
 import Axios from 'axios';
+import {withStyles} from '@material-ui/styles';
+import styles from '../../assets/jss/components/forms/PluginFormStyles';
 
 class PluginForm extends Component {
 
     state = {
         editPluginId: null,
+        title: "Create New Plugin",
         formAction: "/plugins",
         formMethod: "POST",
         name: "",
         description: "",
         inputs: [],
         codebase: {
-            package: "",
-            module: "",
-            method: ""
+            source: "",
+            githubSource: {},
+            pypiSource: {},
+            language: "",
+            pythonLanguage: {}
+        },
+        codebaseSources: [
+            "github",
+            "pypi"
+        ],
+        codebaseSourceTree: {
+            github: [
+                {
+                    name: "plugin[codebase][githubSource][organization]",
+                    label: "Organization",
+                    key: "organization"
+                },
+                {
+                    name: "plugin[codebase][githubSource][repository]",
+                    label: "Repository",
+                    key: "repository"
+                },
+                {
+                    name: "plugin[codebase][githubSource][branch]",
+                    label: "Branch",
+                    key: "branch"
+                }
+            ],
+            pypi: [
+                {
+                    name: "plugin[codebase][pypiSource][name]",
+                    label: "Name",
+                    key: "name"
+                },
+                {
+                    name: "plugin[codebase][pypiSource][version]",
+                    label: "Version",
+                    key: "version"
+                }
+            ]
+        },
+        codebaseLanguages: [
+            "python"
+        ],
+        codebaseLanguageTree: {
+            python: [
+                {
+                    name: "plugin[codebase][pythonLanguage][version]",
+                    label: "Version",
+                    type: "select",
+                    options: [
+                        "3.6",
+                        "3.7"
+                    ],
+                    key: "version"
+                },
+                {
+                    name: "plugin[codebase][pythonLanguage][package]",
+                    label: "Package",
+                    type: "text",
+                    key: "package"
+                },
+                {
+                    name: "plugin[codebase][pythonLanguage][module]",
+                    label: "Module",
+                    type: "text",
+                    key: "module"
+                },
+                {
+                    name: "plugin[codebase][pythonLanguage][method]",
+                    label: "Method",
+                    type: "text",
+                    key: "method"
+                }
+            ]
         }
     }
 
@@ -46,13 +124,16 @@ class PluginForm extends Component {
         this.setState({editPluginId: pluginId});
         let response = await Axios.get(`/plugins/get?id=${pluginId}`);    
         let plugin = response.data[0];
+
         let newState = {
             editPluginId: pluginId,
+            title: `Edit Plugin: ${pluginId}`,
             formAction: `/plugins/${pluginId}?_method=PUT`,
             name: plugin.name,
             description: plugin.description,
             inputs: plugin.inputs,
-            codebase: plugin.codebase
+            // codebase: plugin.codebase
+            codebase: Object.assign(this.state.codebase, plugin.codebase)
         }
         this.setState(newState);
     }
@@ -75,11 +156,18 @@ class PluginForm extends Component {
         this.setState({codebase: newCodebase});
     }
 
+    codebaseSourceChangeHandler = (sourceName, attribute, e) => {
+        let newCodebase = {...this.state.codebase};
+        newCodebase[sourceName][attribute] = e.target.value;
+        this.setState({codebase: newCodebase});
+    }
+
     render() {
+        const { classes } = this.props;
         return (
             <Box>
                 <Container>
-                    <Title title="Create New Plugin" />
+                    <Title title={this.state.title} />
                     <Spacer />
                     <form
                         action={this.state.formAction}
@@ -108,7 +196,9 @@ class PluginForm extends Component {
                         <Spacer />
 
                         <SectionTitle sectionTitle="Description" />
-                        <FormControl>
+                        <FormControl
+                            fullWidth={true}
+                        >
                             <TextField
                                 placeholder="Description" 
                                 name="plugin[description]"
@@ -120,12 +210,13 @@ class PluginForm extends Component {
                                 value={this.state.description}
                                 onChange={e => this.setState({description: e.target.value})}
                             />
-                            <FormHelperText id="description-helper">Longer description, outline test cases and report output</FormHelperText>
+                            <FormHelperText id="description-helper">Longer description</FormHelperText>
                         </FormControl>
                         <Spacer />
 
                         <SectionTitle sectionTitle="Inputs" />
                         <Button 
+                            className={classes.addInputButton}
                             variant="contained"
                             color="primary"
                             onClick={() => {
@@ -147,63 +238,55 @@ class PluginForm extends Component {
                                     <div>
                                         <FormControl>
                                             <InputLabel 
+                                                className={classes.inputsLabel}
                                                 htmlFor="inputs-{i}-key"
                                             >
                                                 Input {i}: Key
                                             </InputLabel>
                                             <Input 
+                                                className={classes.inputsField}
                                                 name={"plugin[inputs]["+i+"][key]"}
                                                 id="inputs-{i}-key"
                                                 aria-describedby="inputs-{i}-key-helper" 
                                                 value={this.state.inputs[i].key}
                                                 onChange={this.inputChangeHandler.bind(this, i, "key")}
                                             />
-                                            <FormHelperText
-                                                id="inputs-{i}-key-helper"
-                                            >
-                                                The key
-                                            </FormHelperText>
                                         </FormControl>
                                         <FormControl>
                                             <InputLabel 
+                                                className={classes.inputsLabel}
                                                 htmlFor="inputs-{i}-type"
                                             >
                                                 Input {i}: Type
                                             </InputLabel>
                                             <Input 
+                                                className={classes.inputsField}
                                                 name={"plugin[inputs]["+i+"][type]"}
                                                 id="inputs-{i}-type"
                                                 aria-describedby="inputs-{i}-type-helper"
                                                 value={this.state.inputs[i].type}
                                                 onChange={this.inputChangeHandler.bind(this, i, "type")}
                                             />
-                                            <FormHelperText
-                                                id="inputs-{i}-type-helper"
-                                            >
-                                                The type
-                                            </FormHelperText>
                                         </FormControl>
                                         <FormControl>
                                             <InputLabel
+                                                className={classes.inputsLabel}
                                                 htmlFor="inputs-{i}-description"
                                             >
                                                 Input {i}: Description
                                             </InputLabel>
                                             <Input
+                                                className={classes.inputsField}
                                                 name={"plugin[inputs]["+i+"][description]"}
                                                 id="inputs-{i}-description"
                                                 aria-describedby="inputs-{i}-description-helper"
                                                 value={this.state.inputs[i].description}
                                                 onChange={this.inputChangeHandler.bind(this, i, "description")}
                                             />
-                                            <FormHelperText
-                                                id="inputs-{i}-description-helper"
-                                            >
-                                                The description
-                                            </FormHelperText>
                                         </FormControl>
                                         <FormControl>
                                             <Button 
+                                                className={classes.inputsRemoveButton}
                                                 variant="contained" 
                                                 color="secondary"
                                                 onClick={this.removeInputHandler.bind(this, i)}
@@ -217,65 +300,142 @@ class PluginForm extends Component {
                         </div>
                         <Spacer />
                         <SectionTitle sectionTitle="Codebase" />
-                        <FormControl>
-                            <InputLabel 
-                                htmlFor="codebase-package"
-                            >
-                                Package
-                            </InputLabel>
-                            <Input 
-                                name="plugin[codebase][package]"
-                                id="codebase-package"
-                                aria-describedby="codebase-package-helper"
-                                value={this.state.codebase.package}
-                                onChange={this.codebaseChangeHandler.bind(this, "package")}
-                            />
-                            <FormHelperText 
-                                id="codebase-package-helper"
-                            >
-                                Dot-notation path of python package (excluding module)
-                            </FormHelperText>
-                        </FormControl>
+                        
+                        <div>
+                            <FormControl>
+                                <InputLabel
+                                    className={classes.inputsLabel}
+                                    htmlFor="codebase-source"
+                                >
+                                    Source
+                                </InputLabel>
+                                <Select
+                                    className={classes.inputsSelect}
+                                    name="plugin[codebase][source]"
+                                    value={this.state.codebase.source}
+                                    onChange={e => {
+                                        let codebase = this.state.codebase;
+                                        codebase.source = e.target.value;
+                                        this.setState({codebase: codebase});
+                                    }}
+                                >
+                                    {this.state.codebaseSources.map(codebaseSource => {
+                                        return (
+                                            <MenuItem
+                                                key={codebaseSource}
+                                                value={codebaseSource}
+                                            >
+                                                {codebaseSource}
+                                            </MenuItem>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
 
-                        <FormControl>
-                            <InputLabel 
-                                htmlFor="codebase-module"
-                            >
-                                Module
-                            </InputLabel>
-                            <Input 
-                                name="plugin[codebase][module]"
-                                id="codebase-module"
-                                aria-describedby="codebase-module-helper"
-                                value={this.state.codebase.module}
-                                onChange={this.codebaseChangeHandler.bind(this, "module")}
-                            />
-                            <FormHelperText 
-                                id="codebase-module-helper"
-                            >
-                                Module name containing test method
-                            </FormHelperText>
-                        </FormControl>
+                            {this.state.codebase.source !== ""
+                            ?
+                                this.state.codebaseSourceTree[this.state.codebase.source].map((codebaseInput) => {
+                                    return (
+                                        <FormControl>
+                                            <InputLabel
+                                                className={classes.inputsLabel}
+                                                htmlFor={`codebase-${codebaseInput.key}`}
+                                            >
+                                                {codebaseInput.label}
+                                            </InputLabel>
+                                            <Input
+                                                className={classes.inputsField}
+                                                name={codebaseInput.name}
+                                                id={`codebase-${codebaseInput.key}`}
+                                                value={this.state.codebase[`${this.state.codebase.source}Source`][codebaseInput.key]}
+                                                onChange={this.codebaseSourceChangeHandler.bind(this, `${this.state.codebase.source}Source`, codebaseInput.key)}
+                                            />
+                                        </FormControl>
+                                    )
+                                })
+                            : null
+                            }
+                        </div>
 
-                        <FormControl>
-                            <InputLabel 
-                                htmlFor="codebase-method"
-                            >
-                                Method
-                            </InputLabel>
-                            <Input 
-                                name="plugin[codebase][method]"
-                                id="codebase-method"
-                                aria-describedby="codebase-method-helper"
-                                value={this.state.codebase.method}
-                                onChange={this.codebaseChangeHandler.bind(this, "method")}
-                            />
-                            <FormHelperText 
-                                id="codebase-method-helper"
-                            >
-                                Method name/signature in specified module
-                            </FormHelperText>
-                        </FormControl>
+                        {/* Codebase language */}
+                        <div>
+                            <FormControl>
+                                <InputLabel
+                                    className={classes.inputsLabel}
+                                    htmlFor="codebase-language"
+                                >
+                                    Language
+                                </InputLabel>
+                                <Select
+                                    className={classes.inputsSelect}
+                                    name="plugin[codebase][language]"
+                                    id="codebase-language"
+                                    value={this.state.codebase.language}
+                                    onChange={e => {
+                                        let codebase = this.state.codebase;
+                                        codebase.language = e.target.value;
+                                        this.setState({codebase: codebase});
+                                    }}
+                                >
+                                    {this.state.codebaseLanguages.map(codebaseLanguage => {
+                                        return (
+                                            <MenuItem
+                                                key={codebaseLanguage}
+                                                value={codebaseLanguage}
+                                            >
+                                                {codebaseLanguage}
+                                            </MenuItem>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
+
+                            {this.state.codebase.language !== ""
+                            ?
+                                this.state.codebaseLanguageTree[this.state.codebase.language].map(langInput => {
+                                    return (
+                                        <FormControl>
+                                            <InputLabel
+                                                className={classes.inputsLabel}
+                                                htmlFor={`codebase-${langInput.key}`}
+                                            >
+                                                {langInput.label}
+                                            </InputLabel>
+                                            {langInput.type === "select"
+                                            ?
+                                                <Select
+                                                    className={classes.inputsSelect}
+                                                    name={langInput.name}
+                                                    id={`codebase-${langInput.key}`}
+                                                    value={this.state.codebase[`${this.state.codebase.language}Language`][langInput.key]}
+                                                    onChange={this.codebaseSourceChangeHandler.bind(this, `${this.state.codebase.language}Language`, langInput.key)}
+                                                >
+                                                    {langInput.options.map(opt => {
+                                                        return (
+                                                            <MenuItem
+                                                                key={opt}
+                                                                value={opt}
+                                                            >
+                                                                {opt}
+                                                            </MenuItem>
+                                                        )
+                                                    })}
+                                                </Select>
+                                            :
+                                                <Input
+                                                    className={classes.inputsField}
+                                                    name={langInput.name}
+                                                    id={`codebase-${langInput.key}`}
+                                                    value={this.state.codebase[`${this.state.codebase.language}Language`][langInput.key]}
+                                                    onChange={this.codebaseSourceChangeHandler.bind(this, `${this.state.codebase.language}Language`, langInput.key)}
+                                                />                                            
+                                            }
+                                        </FormControl>
+                                    )
+                                })
+                            : null
+                            }
+                        </div>
                         <Spacer />
                         <Input type="submit">Submit Form</Input>
                         <Spacer />
@@ -286,4 +446,8 @@ class PluginForm extends Component {
     }
 }
 
-export default PluginForm;
+PluginForm.propTypes = {
+    classes: PropTypes.object.isRequired
+}
+
+export default withStyles(styles)(PluginForm);

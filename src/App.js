@@ -4,6 +4,7 @@ import {Route, BrowserRouter as Router} from 'react-router-dom';
 import FlashMessageGroup from './components/common/FlashMessageGroup';
 
 import Navbar from './components/common/Navbar';
+import Home from './components/pages/Home';
 import Plugins from './components/pages/Plugins';
 import PluginForm from './components/forms/PluginForm';
 import Configurations from './components/pages/Configurations';
@@ -51,11 +52,13 @@ class App extends Component {
                         flashError={JSON.parse(window.flashError)}
                     />
                     <Router>
+                        <Route exact path="/" component={Home} />
                         <Route exact path="/plugins" component={Plugins} />
                         <Route exact path="/plugins/new" component={PluginForm} />
                         <Route exact path="/plugins/:id/edit" component={PluginForm} />
                         <Route exact path="/configurations" component={Configurations} />
                         <Route exact path="/configurations/new" component={ConfigurationForm} />
+                        <Route exact path="/configurations/:id/edit" component={ConfigurationForm} />
                         <Route exact path="/reports" component={Reports} />
                         <Route exact path="/reports/:id" component={ReportsShow} />
                     </Router>

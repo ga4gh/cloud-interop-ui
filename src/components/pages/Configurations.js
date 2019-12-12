@@ -69,6 +69,8 @@ class Configurations extends Component {
                                     <Button
                                         variant="contained"
                                         color="default"
+                                        component="a"
+                                        href={`/configurations/${configuration._id}/edit`}
                                     >
                                         Edit
                                     </Button>

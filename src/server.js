@@ -11,6 +11,7 @@ import {renderReact} from './functions/routes';
 import pluginsRouter from './routes/plugins/router';
 import configurationsRouter from './routes/configurations/router';
 import reportsRouter from './routes/reports/router';
+import schemasRouter from './routes/schemas/router';
 
 const ejs = require("ejs").__express;
 const server = express();
@@ -35,6 +36,7 @@ server.get("/", renderReact);
 server.use("/plugins", pluginsRouter);
 server.use("/configurations", configurationsRouter);
 server.use("/reports", reportsRouter);
+server.use("/schemas", schemasRouter);
 
 server.listen(port, () => {
     console.log(`GA4GH Interoperability Testbed running on port ${port}`);

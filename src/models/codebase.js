@@ -1,17 +1,31 @@
 import mongoose from 'mongoose';
+import {githubSourceSchema} from './codebaseTypes/source/githubSource';
+import {pypiSourceSchema} from './codebaseTypes/source/pypiSource';
+import {pythonLanguageSchema} from './codebaseTypes/language/pythonLanguage';
 
 var codebaseSchema = new mongoose.Schema({
-    package: {
+    source: {
         type: String,
-        required: true
+        required: true,
+        enum: ['github', 'pypi']
     },
-    module: {
-        type: String,
-        required: true
+
+    githubSource: {
+        type: githubSourceSchema
     },
-    method: {
+
+    pypiSource: {
+        type: pypiSourceSchema
+    },
+
+    language: {
         type: String,
-        required: true
+        required: true,
+        enum: ['python']
+    },
+
+    pythonLanguage: {
+        type: pythonLanguageSchema
     }
 })
 

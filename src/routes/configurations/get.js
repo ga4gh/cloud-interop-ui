@@ -1,7 +1,13 @@
 import Configuration from '../../models/configuration';
+import Mongoose from 'mongoose';
 
 const get = (req, res) => {
-    Configuration.find({}, (error, foundConfigurations) => {
+    let searchParams = {};
+    if (req.query.id) {
+        searchParams._id = Mongoose.Types.ObjectId(req.query.id);
+    }
+
+    Configuration.find(searchParams, (error, foundConfigurations) => {
         if (error) {
             req.flash('error', 'Error: Could not get configurations');
             res.send({});

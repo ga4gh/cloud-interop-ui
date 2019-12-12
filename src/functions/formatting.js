@@ -1,4 +1,8 @@
 import strftime from 'strftime';
+import {
+    icons,
+    statuses
+} from '../constants/icons';
 
 const formatTimestamp = timestamp => {
     let date = new Date(timestamp);
@@ -17,7 +21,25 @@ const formatReportSummary = reportSummary => {
     return string;
 }
 
+const iconFromStatus = status => {
+    return icons[statuses[status]];
+}
+
+const iconFromSummary = reportSummary => {
+
+    let icon = null;
+    let keys = ["passed", "warned", "skipped", "failed"]
+    keys.forEach(key => {
+        if (reportSummary[key] > 0) {
+            icon = icons[key];
+        }
+    })
+    return icon;
+}
+
 export {
     formatTimestamp,
-    formatReportSummary
+    formatReportSummary,
+    iconFromStatus,
+    iconFromSummary
 }
